@@ -31,7 +31,7 @@ remote_write:
     password: eyJrIjoiMDRhNGYwMDU1ODljMGU2M2I1MWM5YTgyMDg1MGRiZWM5MjY3M2ExYiIsIm4iOiJtaWNyby1nY3AiLCJpZCI6OTEyNzQ2fQ==
 "
 
-echo -e "$CONFIG_CONTENT" > etc/prometheus/prometheus.yml"
+echo -e "$CONFIG_CONTENT" > etc/prometheus/prometheus.yml
 
 echo "move files and change ownerships"
 cp -f prometheus /usr/local/bin
@@ -50,21 +50,22 @@ chown -R prometheus:prometheus /etc/prometheus/console_libraries
 chown -R prometheus:prometheus /var/lib/prometheus
 
 echo "create service file"
-SERVICE_CONTENT="[Unit]\n
-Description=Prometheus\n
-Wants=network-online.target\n
-After=network-online.target\n
-\n
-[Service]\n
-User=prometheus\n
-Group=prometheus\n
-Type=simple\n
-ExecStart=/usr/local/bin/prometheus --config.file /etc/prometheus/prometheus.yml --storage.tsdb.path /var/lib/prometheus/  --web.console.templates=/etc/prometheus/consoles --web.console.libraries=/etc/prometheus/console_libraries\n
-\n
-[Install]\n
-WantedBy=multi-user.target\n
+SERVICE_CONTENT="
+[Unit]
+Description=Prometheus
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=prometheus
+Group=prometheus
+Type=simple
+ExecStart=/usr/local/bin/prometheus --config.file /etc/prometheus/prometheus.yml --storage.tsdb.path /var/lib/prometheus/  --web.console.templates=/etc/prometheus/consoles --web.console.libraries=/etc/prometheus/console_libraries
+
+[Install]
+WantedBy=multi-user.target
 "
-sudo bash -c "echo -e '$SERVICE_CONTENT' > /etc/systemd/system/prometheus.service"
+echo -e "$SERVICE_CONTENT" > /etc/systemd/system/prometheus.service
 
 echo "start service"
 sudo systemctl daemon-reload
