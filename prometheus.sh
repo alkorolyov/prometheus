@@ -14,6 +14,10 @@ wget -q $(curl -s https://api.github.com/repos/prometheus/prometheus/releases/la
 tar vxf prometheus*.tar.gz
 cd prometheus*/
 
+echo 'create install dir'
+sudo mkdir /etc/prometheus
+sudo mkdir /var/lib/prometheus
+
 echo "create config"
 CONFIG_CONTENT="
 global:
@@ -38,9 +42,6 @@ cp -f prometheus /usr/local/bin
 cp -f promtool /usr/local/bin
 chown prometheus:prometheus /usr/local/bin/prometheus
 chown prometheus:prometheus /usr/local/bin/promtool
-
-sudo mkdir /etc/prometheus
-sudo mkdir /var/lib/prometheus
 
 cp -rf consoles /etc/prometheus
 cp -rf console_libraries /etc/prometheus
