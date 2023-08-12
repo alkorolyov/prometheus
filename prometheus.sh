@@ -2,18 +2,20 @@
 
 ############## PROMETHEUS_INSTALL.sh #######################
 
+echo "apt update"
 sudo apt-get -qq update
 
-# create prometheus user:group
+echo "create prometheus user/group"
 sudo useradd -rs /bin/false prometheus
 
-# Download and unpack latest prometheus to /tmp
+echo "Download and unpack latest prometheus to /tmp"
 cd /tmp
-wget $(curl -s https://api.github.com/repos/prometheus/prometheus/releases/latest | grep "browser_download_url.*linux-amd64" | cut -d '"' -f 4)
+wget -q $(curl -s https://api.github.com/repos/prometheus/prometheus/releases/latest | grep "browser_download_url.*linux-amd64" | cut -d '"' -f 4)
 tar vxf prometheus*.tar.gz
 cd prometheus*/
 
-# edit config
+
+echo "create config"
 CONFIG_CONTENT="
 global:\n
   scrape_interval: 5s\n
@@ -32,13 +34,12 @@ remote_write:\n
 
 echo -e $CONFIG_CONTENT > prometheus.yml
 
-# move files and change ownerships
+echo "move files and change ownerships"
 mv prometheus /usr/local/bin
 mv promtool /usr/local/bin
 chown prometheus:prometheus /usr/local/bin/prometheus
 chown prometheus:prometheus /usr/local/bin/promtool
 
-# create dirs
 sudo mkdir /etc/prometheus
 sudo mkdir /var/lib/prometheus
 
@@ -50,6 +51,7 @@ chown -R prometheus:prometheus /etc/prometheus/consoles
 chown -R prometheus:prometheus /etc/prometheus/console_libraries
 chown -R prometheus:prometheus /var/lib/prometheus
 
+echo "create service file"
 SERVICE_CONTENT="[Unit]\n
 Description=Prometheus\n
 Wants=network-online.target\n
@@ -64,18 +66,22 @@ ExecStart=/usr/local/bin/prometheus --config.file /etc/prometheus/prometheus.yml
 [Install]\n
 WantedBy=multi-user.target\n
 "
-
 sudo bash -c "echo -e '$SERVICE_CONTENT' > /etc/systemd/system/prometheus.service"
 
+echo "start service"
 sudo systemctl daemon-reload
 sudo systemctl start prometheus
 sudo systemctl status prometheus
 sudo systemctl enable prometheus
 
+echo "allow ports"
 sudo ufw allow 9090/tcp
 sudo ufw allow 9100/tcp
 
-# delete tmp files
+echo "delete tmp files"
 cd /tmp
 rm -rf /tmp/prometheus*/
 rm -rf /tmp/prometheus*
+
+echo "finished!"
+
