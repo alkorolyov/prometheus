@@ -9,7 +9,7 @@ cd node_exporter*/
 
 echo "create user/group"
 sudo useradd -rs /bin/false node_exporter
-sudo cp node_exporter /usr/local/bin
+sudo cp -f node_exporter /usr/local/bin
 sudo chown node_exporter:node_exporter /usr/local/bin/node_exporter
 
 echo "create service file"
