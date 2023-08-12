@@ -3,10 +3,10 @@
 ############## PROMETHEUS_INSTALL.sh #######################
 
 echo "apt update"
-sudo apt-get -qq update
+apt-get -qq update
 
 echo "create prometheus user/group"
-sudo useradd -rs /bin/false prometheus
+useradd -rs /bin/false prometheus
 
 echo "Download and unpack latest prometheus to /tmp"
 cd /tmp
@@ -16,19 +16,19 @@ cd prometheus*/
 
 echo "create config"
 CONFIG_CONTENT="
-global:\n
-  scrape_interval: 5s\n
+\nglobal:
+\n  scrape_interval: 5s
 \n
-scrape_configs:\n
-  - job_name: vm_test_node\n
-    static_configs:\n
-      - targets: ['localhost:9100', 'localhost:9090']\n
+\nscrape_configs:
+\n- job_name: node_name
+\n  static_configs:
+\n  - targets: ['localhost:9100', 'localhost:9090']
 \n
-remote_write:\n
-- url: https://prometheus-prod-22-prod-eu-west-3.grafana.net/api/prom/push\n
-  basic_auth:\n
-    username: 1120366\n
-    password: eyJrIjoiMDRhNGYwMDU1ODljMGU2M2I1MWM5YTgyMDg1MGRiZWM5MjY3M2ExYiIsIm4iOiJtaWNyby1nY3AiLCJpZCI6OTEyNzQ2fQ==\n
+\nremote_write:
+\n- url: https://prometheus-prod-22-prod-eu-west-3.grafana.net/api/prom/push
+\n  basic_auth:
+\n    username: 1120366
+\n    password: eyJrIjoiMDRhNGYwMDU1ODljMGU2M2I1MWM5YTgyMDg1MGRiZWM5MjY3M2ExYiIsIm4iOiJtaWNyby1nY3AiLCJpZCI6OTEyNzQ2fQ==
 "
 
 echo -e $CONFIG_CONTENT > etc/prometheus/prometheus.yml
