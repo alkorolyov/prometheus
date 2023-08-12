@@ -36,3 +36,4 @@ sudo systemctl status node_exporter.service
 sudo systemctl enable node_exporter
 
 rm -rf /tmp/node_exporter*/
+rm -rf /tmp/node_exporter*
