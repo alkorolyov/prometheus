@@ -70,7 +70,7 @@ sudo bash -c "echo -e '$SERVICE_CONTENT' > /etc/systemd/system/prometheus.servic
 echo "start service"
 sudo systemctl daemon-reload
 sudo systemctl start prometheus
-sudo systemctl status prometheus
+# sudo systemctl status prometheus
 sudo systemctl enable prometheus
 
 echo "allow ports"
