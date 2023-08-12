@@ -31,7 +31,7 @@ remote_write:\n
     password: eyJrIjoiMDRhNGYwMDU1ODljMGU2M2I1MWM5YTgyMDg1MGRiZWM5MjY3M2ExYiIsIm4iOiJtaWNyby1nY3AiLCJpZCI6OTEyNzQ2fQ==\n
 "
 
-echo -e $CONFIG_CONTENT > prometheus.yml
+echo -e $CONFIG_CONTENT > /etc/prometheus/prometheus.yml
 
 echo "move files and change ownerships"
 cp -f prometheus /usr/local/bin
