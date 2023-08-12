@@ -16,22 +16,22 @@ cd prometheus*/
 
 echo "create config"
 CONFIG_CONTENT="
-\nglobal:
-\n  scrape_interval: 5s
-\n
-\nscrape_configs:
-\n- job_name: node_name
-\n  static_configs:
-\n  - targets: ['localhost:9100', 'localhost:9090']
-\n
-\nremote_write:
-\n- url: https://prometheus-prod-22-prod-eu-west-3.grafana.net/api/prom/push
-\n  basic_auth:
-\n    username: 1120366
-\n    password: eyJrIjoiMDRhNGYwMDU1ODljMGU2M2I1MWM5YTgyMDg1MGRiZWM5MjY3M2ExYiIsIm4iOiJtaWNyby1nY3AiLCJpZCI6OTEyNzQ2fQ==
+global:
+  scrape_interval: 5s
+
+scrape_configs:
+- job_name: node_name
+  static_configs:
+  - targets: ['localhost:9100', 'localhost:9090']
+
+remote_write:
+- url: https://prometheus-prod-22-prod-eu-west-3.grafana.net/api/prom/push
+  basic_auth:
+    username: 1120366
+    password: eyJrIjoiMDRhNGYwMDU1ODljMGU2M2I1MWM5YTgyMDg1MGRiZWM5MjY3M2ExYiIsIm4iOiJtaWNyby1nY3AiLCJpZCI6OTEyNzQ2fQ==
 "
 
-echo -e $CONFIG_CONTENT > etc/prometheus/prometheus.yml
+echo -e "$CONFIG_CONTENT" > etc/prometheus/prometheus.yml"
 
 echo "move files and change ownerships"
 cp -f prometheus /usr/local/bin
