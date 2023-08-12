@@ -33,7 +33,7 @@ sudo bash -c "echo -e '$SERVICE' > /etc/systemd/system/node_exporter.service"
 echo "start service"
 sudo systemctl daemon-reload
 sudo systemctl start node_exporter
-sudo systemctl status node_exporter.service
+# sudo systemctl status node_exporter.service
 sudo systemctl enable node_exporter
 
 echo "delete tmp files"
