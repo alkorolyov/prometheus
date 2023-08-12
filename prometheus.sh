@@ -2,7 +2,7 @@
 
 ############## PROMETHEUS_INSTALL.sh #######################
 
-sudo apt-get -q update
+sudo apt-get -qq update
 
 # create prometheus user:group
 sudo useradd -rs /bin/false prometheus
@@ -65,17 +65,17 @@ ExecStart=/usr/local/bin/prometheus --config.file /etc/prometheus/prometheus.yml
 WantedBy=multi-user.target\n
 "
 
-sudo bash "echo -e '$SERVICE_CONTENT' > /etc/systemd/system/prometheus.service"
+sudo bash -c "echo -e '$SERVICE_CONTENT' > /etc/systemd/system/prometheus.service"
 
 sudo systemctl daemon-reload
 sudo systemctl start prometheus
 sudo systemctl status prometheus
 sudo systemctl enable prometheus
 
-ufw allow 9090/tcp
-ufw allow 9100/tcp
+sudo ufw allow 9090/tcp
+sudo ufw allow 9100/tcp
 
+# delete tmp files
 cd /tmp
-
 rm -rf /tmp/prometheus*/
 rm -rf /tmp/prometheus*
