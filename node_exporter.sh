@@ -9,7 +9,7 @@ GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 NC='\033[0m' # No Color
 
-echo "=> Start installation of NODE_EXPORTER service"
+echo "=> {$GREEN}Start installation of NODE_EXPORTER service{$NC}"
 
 if [[ $UID -ne 0 ]]; then
     echo "Installation should be run as root. Use 'sudo bash ./node_exporter.sh'"
