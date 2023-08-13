@@ -1,6 +1,9 @@
 #!/bin/bash
-
 ############## PROMETHEUS_INSTALL.sh #######################
+
+# Define ANSI escape codes for colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
 
 echo "=> Start installation of prometheus service"
 
@@ -88,9 +91,16 @@ echo -e "$SERVICE_CONTENT" > /etc/systemd/system/prometheus.service
 echo "=> Start service"
 systemctl daemon-reload
 systemctl start prometheus
-# sudo systemctl status prometheus
+
+# check service status
 status=$(systemctl is-active prometheus)
-echo "=> Service status: '$status'"
+if [[ "$status" == "active" ]]; then
+    status="${GREEN}$status${NC}"
+else
+    status="${RED}$status${NC}"
+fi
+echo -e "=> Service status: $status"
+
 systemctl enable prometheus
 
 echo "=> Allow ports for local firewall"
