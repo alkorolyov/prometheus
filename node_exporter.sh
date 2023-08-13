@@ -1,6 +1,10 @@
 #!/bin/bash
 ###### node_exporter service ########
 
+# Define ANSI escape codes for colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+
 echo "=> Start installation of node_exporter service"
 
 if [[ $UID -ne 0 ]]; then
@@ -39,9 +43,16 @@ bash -c "echo -e '$SERVICE' > /etc/systemd/system/node_exporter.service"
 echo "=> Start service"
 systemctl daemon-reload
 systemctl start node_exporter
-# sudo systemctl status node_exporter
+
+# check service status
 status=$(systemctl is-active node_exporter)
-echo "=> Service status: '$status'"
+if [[ "$status" == "active" ]]; then
+    status="${GREEN}$status${NC}"
+else
+    status="${RED}$status${NC}"
+fi
+echo -e "=> Service status: $status"
+
 systemctl enable node_exporter
 
 echo "=> Delete tmp files"
@@ -49,5 +60,3 @@ rm -rf /tmp/node_exporter*/
 rm -rf /tmp/node_exporter*
 
 echo "=> Installation complete!"
-
-echo "=> Complete"
