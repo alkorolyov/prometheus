@@ -16,7 +16,7 @@ echo "=> Download and unpack latest prometheus to /tmp"
 cd /tmp
 LATEST_PROMETHEUS=$(curl -s https://api.github.com/repos/prometheus/prometheus/releases/latest | grep "browser_download_url.*linux-amd64" | cut -d '"' -f 4)
 echo "Latest prometheus version: '$LATEST_PROMETHEUS'"
-wget -q LATEST_PROMETHEUS
+wget -q $LATEST_PROMETHEUS
 tar vxf prometheus*.tar.gz
 cd prometheus*/
 
@@ -39,8 +39,9 @@ CONFIG_CONTENT="
 global:
   scrape_interval: 5s
 
+# change default name
 scrape_configs:
-- job_name: node_name # change this
+- job_name: node_name # default name
   static_configs:
   - targets: ['localhost:9100', 'localhost:9090']
 
