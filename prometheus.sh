@@ -9,8 +9,8 @@ if [[ $UID -ne 0 ]]; then
     exit
 fi
 
-echo "=> Apt update"
-apt-get -qq update
+# echo "=> Apt update"
+# apt-get -qq update
 
 echo "=> Download and unpack latest prometheus to /tmp"
 cd /tmp
