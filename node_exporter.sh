@@ -16,7 +16,7 @@ fi
 
 echo "=> Download and extract latest node_exporter"
 cd /tmp
-wget -q $(curl -s https://api.github.com/repos/prometheus/node_exporter/releases/latest | grep "browser_download_url.*linux-amd64" | cut -d '"' -f 4)
+wget -q —show-progress $(curl -s https://api.github.com/repos/prometheus/node_exporter/releases/latest | grep "browser_download_url.*linux-amd64" | cut -d '"' -f 4)
 tar vxf node_exporter*.tar.gz
 cd node_exporter*/
 
