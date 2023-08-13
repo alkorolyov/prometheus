@@ -7,6 +7,9 @@ GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 NC='\033[0m' # No Color
 
+CONFIG_DIR='/etc/prometheus'
+DATA_DIR='/var/lib/prometheus'
+
 echo "=> Start installation of prometheus service"
 
 if [[ $UID -ne 0 ]]; then
@@ -25,8 +28,8 @@ wget -q --show-progress $latest_prometheus
 tar vxf prometheus*.tar.gz
 cd prometheus*/
 
-echo '=> Create installation dirs: /etc/prometheus /var/lib/prometheus'
-sudo mkdir /etc/prometheus
+echo '=> Create installation dirs: $CONFIG_DIR /var/lib/prometheus'
+sudo mkdir $CONFIG_DIR
 sudo mkdir /var/lib/prometheus
 
 echo "=> Create prometheus user/group"
@@ -63,13 +66,13 @@ echo -e "$CONFIG_CONTENT" > prometheus.yml
 # edit config if needed
 nano prometheus.yml
 
-echo "=> Install web and config files to /etc/prometheus"
-cp -rf consoles /etc/prometheus
-cp -rf console_libraries /etc/prometheus
-cp -r prometheus.yml /etc/prometheus
-chown prometheus:prometheus /etc/prometheus
-chown -R prometheus:prometheus /etc/prometheus/consoles
-chown -R prometheus:prometheus /etc/prometheus/console_libraries
+echo "=> Install web and config files to $CONFIG_DIR"
+cp -rf consoles $CONFIG_DIR
+cp -rf console_libraries $CONFIG_DIR
+cp -r prometheus.yml $CONFIG_DIR
+chown prometheus:prometheus $CONFIG_DIR
+chown -R prometheus:prometheus $CONFIG_DIR/consoles
+chown -R prometheus:prometheus $CONFIG_DIR/console_libraries
 chown -R prometheus:prometheus /var/lib/prometheus
 
 echo "=> Create service file"
@@ -83,7 +86,7 @@ After=network-online.target
 User=prometheus
 Group=prometheus
 Type=simple
-ExecStart=/usr/local/bin/prometheus --config.file /etc/prometheus/prometheus.yml --storage.tsdb.path /var/lib/prometheus/  --web.console.templates=/etc/prometheus/consoles --web.console.libraries=/etc/prometheus/console_libraries
+ExecStart=/usr/local/bin/prometheus --config.file $CONFIG_DIR/prometheus.yml --storage.tsdb.path /var/lib/prometheus/  --web.console.templates=$CONFIG_DIR/consoles --web.console.libraries=$CONFIG_DIR/console_libraries
 
 [Install]
 WantedBy=multi-user.target
