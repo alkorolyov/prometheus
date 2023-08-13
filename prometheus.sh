@@ -29,14 +29,14 @@ wget -q --show-progress $latest_prometheus
 tar vxf prometheus*.tar.gz
 cd prometheus*/
 
-echo '=> Create installation dirs: $CONFIG_DIR $DATA_DIR'
+echo '=> Create config and data dirs: $CONFIG_DIR $DATA_DIR'
 sudo mkdir $CONFIG_DIR
 sudo mkdir $DATA_DIR
 
 echo "=> Create prometheus user/group"
 useradd -rs /bin/false prometheus
 
-echo "=> Install executables to $BIN_DIR"
+echo "=> Install binaries to $BIN_DIR"
 cp -f prometheus $BIN_DIR
 cp -f promtool $BIN_DIR
 chown prometheus:prometheus $BIN_DIR/prometheus
