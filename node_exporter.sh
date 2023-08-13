@@ -15,7 +15,7 @@ GROUP=$USER
 echo -e "=> ${GREEN}Start installation of NODE_EXPORTER service${NC}"
 
 if [[ $UID -ne 0 ]]; then
-    echo "Installation should be run as root. Use 'sudo bash ./node_exporter.sh'"
+    echo "Installation should be run as root."
     exit
 fi
 

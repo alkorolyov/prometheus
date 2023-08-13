@@ -16,7 +16,7 @@ GROUP=$USER
 echo -e "=> ${GREEN}Start installation of PROMETHEUS service${NC}"
 
 if [[ $UID -ne 0 ]]; then
-    echo "Installation should be run as root. Use 'sudo bash ./prometheus.sh'"
+    echo "Installation should be run as root"
     exit
 fi
 
