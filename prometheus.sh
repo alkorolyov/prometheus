@@ -86,10 +86,12 @@ WantedBy=multi-user.target
 echo -e "$SERVICE_CONTENT" > /etc/systemd/system/prometheus.service
 
 echo "=> Start service"
-sudo systemctl daemon-reload
-sudo systemctl start prometheus
+systemctl daemon-reload
+systemctl start prometheus
 # sudo systemctl status prometheus
-sudo systemctl enable prometheus
+status=$(systemctl is-active prometheus)
+echo "=> Service status: '$status'"
+systemctl enable prometheus
 
 echo "=> Allow ports for local firewall"
 sudo ufw allow 9090/tcp
