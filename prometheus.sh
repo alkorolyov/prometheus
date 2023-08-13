@@ -11,7 +11,7 @@ BIN_DIR='/usr/local/bin'
 CONFIG_DIR='/etc/prometheus'
 DATA_DIR='/var/lib/prometheus'
 
-echo "=> Start installation of prometheus service"
+echo "=> Start installation of PROMETHEUS service"
 
 if [[ $UID -ne 0 ]]; then
     echo "Installation should be run as root. Use 'sudo bash ./prometheus.sh'"
