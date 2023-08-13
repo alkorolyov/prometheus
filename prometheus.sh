@@ -7,6 +7,7 @@ GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 NC='\033[0m' # No Color
 
+BIN_DIR='/usr/local/bin'
 CONFIG_DIR='/etc/prometheus'
 DATA_DIR='/var/lib/prometheus'
 
@@ -35,11 +36,11 @@ sudo mkdir $DATA_DIR
 echo "=> Create prometheus user/group"
 useradd -rs /bin/false prometheus
 
-echo "=> Install executables to /usr/local/bin"
-cp -f prometheus /usr/local/bin
-cp -f promtool /usr/local/bin
-chown prometheus:prometheus /usr/local/bin/prometheus
-chown prometheus:prometheus /usr/local/bin/promtool
+echo "=> Install executables to $BIN_DIR"
+cp -f prometheus $BIN_DIR
+cp -f promtool $BIN_DIR
+chown prometheus:prometheus $BIN_DIR/prometheus
+chown prometheus:prometheus $BIN_DIR/promtool
 
 echo "=> Create config prometheus.yml"
 CONFIG_CONTENT="
@@ -86,7 +87,7 @@ After=network-online.target
 User=prometheus
 Group=prometheus
 Type=simple
-ExecStart=/usr/local/bin/prometheus --config.file $CONFIG_DIR/prometheus.yml --storage.tsdb.path $DATA_DIR/  --web.console.templates=$CONFIG_DIR/consoles --web.console.libraries=$CONFIG_DIR/console_libraries
+ExecStart=$BIN_DIR/prometheus --config.file $CONFIG_DIR/prometheus.yml --storage.tsdb.path $DATA_DIR/  --web.console.templates=$CONFIG_DIR/consoles --web.console.libraries=$CONFIG_DIR/console_libraries
 
 [Install]
 WantedBy=multi-user.target
