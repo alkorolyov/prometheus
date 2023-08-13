@@ -28,9 +28,9 @@ wget -q --show-progress $latest_prometheus
 tar vxf prometheus*.tar.gz
 cd prometheus*/
 
-echo '=> Create installation dirs: $CONFIG_DIR /var/lib/prometheus'
+echo '=> Create installation dirs: $CONFIG_DIR $DATA_DIR'
 sudo mkdir $CONFIG_DIR
-sudo mkdir /var/lib/prometheus
+sudo mkdir $DATA_DIR
 
 echo "=> Create prometheus user/group"
 useradd -rs /bin/false prometheus
@@ -73,7 +73,7 @@ cp -r prometheus.yml $CONFIG_DIR
 chown prometheus:prometheus $CONFIG_DIR
 chown -R prometheus:prometheus $CONFIG_DIR/consoles
 chown -R prometheus:prometheus $CONFIG_DIR/console_libraries
-chown -R prometheus:prometheus /var/lib/prometheus
+chown -R prometheus:prometheus $DATA_DIR
 
 echo "=> Create service file"
 SERVICE_CONTENT="
@@ -86,7 +86,7 @@ After=network-online.target
 User=prometheus
 Group=prometheus
 Type=simple
-ExecStart=/usr/local/bin/prometheus --config.file $CONFIG_DIR/prometheus.yml --storage.tsdb.path /var/lib/prometheus/  --web.console.templates=$CONFIG_DIR/consoles --web.console.libraries=$CONFIG_DIR/console_libraries
+ExecStart=/usr/local/bin/prometheus --config.file $CONFIG_DIR/prometheus.yml --storage.tsdb.path $DATA_DIR/  --web.console.templates=$CONFIG_DIR/consoles --web.console.libraries=$CONFIG_DIR/console_libraries
 
 [Install]
 WantedBy=multi-user.target
