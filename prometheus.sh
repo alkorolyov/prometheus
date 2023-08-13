@@ -19,9 +19,9 @@ fi
 
 echo "=> Download and unpack latest prometheus to /tmp"
 cd /tmp
-LATEST_PROMETHEUS=$(curl -s https://api.github.com/repos/prometheus/prometheus/releases/latest | grep "browser_download_url.*linux-amd64" | cut -d '"' -f 4)
-echo $LATEST_PROMETHEUS
-wget -q $LATEST_PROMETHEUS
+latest_prometheus=$(curl -s https://api.github.com/repos/prometheus/prometheus/releases/latest | grep "browser_download_url.*linux-amd64" | cut -d '"' -f 4)
+echo $latest_prometheus
+wget -q --show-progress $latest_prometheus
 tar vxf prometheus*.tar.gz
 cd prometheus*/
 
