@@ -39,11 +39,15 @@ bash -c "echo -e '$SERVICE' > /etc/systemd/system/node_exporter.service"
 echo "=> Start service"
 systemctl daemon-reload
 systemctl start node_exporter
-# sudo systemctl status node_exporter.service
+# sudo systemctl status node_exporter
+status=$(systemctl is-active node_exporter)
+echo "=> Service status: '$status'"
 systemctl enable node_exporter
 
 echo "=> Delete tmp files"
 rm -rf /tmp/node_exporter*/
 rm -rf /tmp/node_exporter*
+
+echo "=> Installation complete!"
 
 echo "=> Complete"
