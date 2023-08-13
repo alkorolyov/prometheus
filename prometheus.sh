@@ -10,6 +10,8 @@ NC='\033[0m' # No Color
 BIN_DIR='/usr/local/bin'
 CONFIG_DIR='/etc/prometheus'
 DATA_DIR='/var/lib/prometheus'
+USER='prometheus'
+GROUP=$USER
 
 echo -e "=> ${GREEN}Start installation of PROMETHEUS service${NC}"
 
@@ -30,17 +32,18 @@ tar vxf prometheus*.tar.gz
 cd prometheus*/
 
 echo "=> Create config and data dirs: $CONFIG_DIR $DATA_DIR"
-sudo mkdir $CONFIG_DIR
-sudo mkdir $DATA_DIR
+mkdir $CONFIG_DIR
+mkdir $DATA_DIR
 
-echo "=> Create prometheus user/group"
-useradd -rs /bin/false prometheus
+echo "=> Create $USER user/group"
+
+useradd -rs /bin/false $USER
 
 echo "=> Install binaries to $BIN_DIR"
 cp -f prometheus $BIN_DIR
 cp -f promtool $BIN_DIR
-chown prometheus:prometheus $BIN_DIR/prometheus
-chown prometheus:prometheus $BIN_DIR/promtool
+chown $USER:$GROUP $BIN_DIR/prometheus
+chown $USER:$GROUP $BIN_DIR/promtool
 
 echo "=> Create config prometheus.yml"
 CONFIG_CONTENT="
@@ -71,10 +74,10 @@ echo "=> Install web and config files to $CONFIG_DIR"
 cp -rf consoles $CONFIG_DIR
 cp -rf console_libraries $CONFIG_DIR
 cp -r prometheus.yml $CONFIG_DIR
-chown prometheus:prometheus $CONFIG_DIR
-chown -R prometheus:prometheus $CONFIG_DIR/consoles
-chown -R prometheus:prometheus $CONFIG_DIR/console_libraries
-chown -R prometheus:prometheus $DATA_DIR
+chown $USER:$GROUP $CONFIG_DIR
+chown -R $USER:$GROUP $CONFIG_DIR/consoles
+chown -R $USER:$GROUP $CONFIG_DIR/console_libraries
+chown -R $USER:$GROUP $DATA_DIR
 
 echo "=> Create service file"
 SERVICE_CONTENT="
@@ -84,8 +87,8 @@ Wants=network-online.target
 After=network-online.target
 
 [Service]
-User=prometheus
-Group=prometheus
+User=$USER
+Group=$GROUP
 Type=simple
 ExecStart=$BIN_DIR/prometheus --config.file $CONFIG_DIR/prometheus.yml --storage.tsdb.path $DATA_DIR/  --web.console.templates=$CONFIG_DIR/consoles --web.console.libraries=$CONFIG_DIR/console_libraries
 

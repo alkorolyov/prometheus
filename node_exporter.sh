@@ -9,6 +9,9 @@ GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 NC='\033[0m' # No Color
 
+USER='node_exporter'
+GROUP=$USER
+
 echo -e "=> ${GREEN}Start installation of NODE_EXPORTER service${NC}"
 
 if [[ $UID -ne 0 ]]; then
@@ -24,24 +27,24 @@ tar vxf node_exporter*.tar.gz
 cd node_exporter*/
 
 echo "=> Create user/group"
-sudo useradd -rs /bin/false node_exporter
+sudo useradd -rs /bin/false $USER
 sudo cp -f node_exporter $BIN_DIR
-sudo chown node_exporter:node_exporter $BIN_DIR/node_exporter
+sudo chown $USER:$GROUP $BIN_DIR/node_exporter
 
 echo "=> Create service file"
-SERVICE_CONTENT="\n
-[Unit]\n
-Description=Node Exporter\n
-After=network-online.target\n
-\n
-[Service]\n
-User=node_exporter\n
-Group=node_exporter\n
-Type=simple\n
-ExecStart=$BIN_DIR/node_exporter\n
-\n
-[Install]\n
-WantedBy=multi-user.target\n
+SERVICE_CONTENT="
+[Unit]
+Description=Node Exporter
+After=network-online.target
+
+[Service]
+User=$USER
+Group=$GROUP
+Type=simple
+ExecStart=$BIN_DIR/node_exporter
+
+[Install]
+WantedBy=multi-user.target
 "
 echo -e "$SERVICE_CONTENT" > /etc/systemd/system/node_exporter.service
 
