@@ -1,0 +1,1 @@
+git clone https://github.com/alkorolyov/prometheus; cd prometheus; sudo bash ./install.sh

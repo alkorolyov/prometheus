@@ -29,7 +29,7 @@ wget -q --show-progress $latest_prometheus
 tar vxf prometheus*.tar.gz
 cd prometheus*/
 
-echo '=> Create config and data dirs: $CONFIG_DIR $DATA_DIR'
+echo "=> Create config and data dirs: $CONFIG_DIR $DATA_DIR"
 sudo mkdir $CONFIG_DIR
 sudo mkdir $DATA_DIR
 
