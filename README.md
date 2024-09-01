@@ -1,5 +1,10 @@
 git clone https://github.com/alkorolyov/prometheus; cd prometheus; sudo bash ./install.sh
 
+```
+./node_exporter --collector.disable-defaults --collector.cpu --collector.diskstats --collector.filesystem --collector.netdev --collector.meminfo --collector.mdadm --collector.textfile --collector.textfile.direc
+tory .
+```
+
 
 ### custom prometheus metrics
 prometheus.yml
