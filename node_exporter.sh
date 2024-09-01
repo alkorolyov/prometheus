@@ -2,6 +2,7 @@
 ###### node_exporter service ########
 
 BIN_DIR='/usr/local/bin'
+VAR_DIR ='/var/lib/node_exporter'
 
 # Define ANSI escape codes for colors
 RED='\033[0;31m'
@@ -31,6 +32,9 @@ sudo useradd -rs /bin/false $USER
 sudo cp -f node_exporter $BIN_DIR
 sudo chown $USER:$GROUP $BIN_DIR/node_exporter
 
+sudo mkdir -p $VAR_DIR/proms
+sudo chown -R $USER:$GROUP $VAR_DIR
+
 echo "=> Create service file"
 SERVICE_CONTENT="
 [Unit]
@@ -41,7 +45,7 @@ After=network-online.target
 User=$USER
 Group=$GROUP
 Type=simple
-ExecStart=$BIN_DIR/node_exporter
+ExecStart=node_exporter --collector.textfile.directory $VAR_DIR/proms --collector.disable-defaults --collector.cpu --collector.diskstats --collector.filesystem --collector.netdev --collector.meminfo --collector.mdadm --collector.textfile
 
 [Install]
 WantedBy=multi-user.target
